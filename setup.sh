@@ -16,12 +16,6 @@ kubectl wait --for=condition=ready --timeout=2m pod -l cluster.x-k8s.io/provider
 kubectl wait --for=condition=ready --timeout=2m pod -l cluster.x-k8s.io/provider -n capi-kubeadm-bootstrap-system
 kubectl wait --for=condition=ready --timeout=2m pod -l app.kubernetes.io/instance -n cert-manager
 
-# clusterctl generate cluster my-cluster --flavor development \
-#   --kubernetes-version v1.22.0 \
-#   --control-plane-machine-count=1 \
-#   --worker-machine-count=1 \
-#   > cluster-api-system/cluster.yaml
-
 flux bootstrap github \
   --owner=$GITHUB_USER \
   --repository=$REPO \
