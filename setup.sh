@@ -31,3 +31,11 @@ kubectl wait --for=condition=ready --timeout=2m cluster -l cluster=$WORKLOAD_CLU
 kind export kubeconfig --name $WORKLOAD_CLUSTER_NAME
 
 kubectl apply -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
+
+flux bootstrap github \
+  --owner=$GITHUB_USER \
+  --repository=$REPO \
+  --branch=main \
+  --path=./clusters/$WORKLOAD_CLUSTER_NAME \
+  --personal \
+  --read-write-key
