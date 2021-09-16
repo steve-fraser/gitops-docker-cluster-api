@@ -32,9 +32,8 @@ flux bootstrap github \
 
 flux reconcile kustomization cluster-manager 
 
-kubectl wait --for=condition=ready --timeout=2m cluster -l cluster=my-cluster
+kubectl wait --for=condition=ready --timeout=2m cluster -l cluster=$WORKLOAD_CLUSTER_NAME
 
-# kind export kubeconfig --name my-cluster
+kind export kubeconfig --name $WORKLOAD_CLUSTER_NAME
 
-# kubectl --kubeconfig=./capi-quickstart.kubeconfig \
-#   apply -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
+kubectl apply -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
