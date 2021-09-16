@@ -3,6 +3,7 @@
 export GITHUB_USER=steve-fraser 
 export REPO=gitops-docker-cluster-api
 export MGMT_CLUSTER_NAME=cluster-manager   
+export WORKLOAD_CLUSTER_NAME=my-cluster  
 
 
 kind create cluster --name $MGMT_CLUSTER_NAME \
@@ -15,7 +16,7 @@ kubectl wait --for=condition=ready --timeout=2m pod -l cluster.x-k8s.io/provider
 kubectl wait --for=condition=ready --timeout=2m pod -l cluster.x-k8s.io/provider -n capi-kubeadm-bootstrap-system
 kubectl wait --for=condition=ready --timeout=2m pod -l app.kubernetes.io/instance -n cert-manager
 
-clusterctl generate cluster capi-quickstart --flavor development \
+clusterctl generate cluster my-cluster --flavor development \
   --kubernetes-version v1.22.0 \
   --control-plane-machine-count=1 \
   --worker-machine-count=1 \
@@ -29,7 +30,11 @@ flux bootstrap github \
   --personal \
   --read-write-key
 
-clusterctl get kubeconfig capi-quickstart > capi-quickstart.kubeconfig
+flux reconcile kustomization cluster-manager 
 
-kubectl --kubeconfig=./capi-quickstart.kubeconfig \
-  apply -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
+#kubectl wait --for=condition=ready --timeout=2m pod -l app.kubernetes.io/instance -n cert-manager
+
+# kind export kubeconfig --name my-cluster
+
+# kubectl --kubeconfig=./capi-quickstart.kubeconfig \
+#   apply -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
