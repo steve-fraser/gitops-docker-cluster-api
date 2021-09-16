@@ -3,4 +3,4 @@
 
 
 
-##Demo for creating a kind cluster using GitOps and ClusterAPI
+## Demo for creating a kind cluster using GitOps and ClusterAPI
