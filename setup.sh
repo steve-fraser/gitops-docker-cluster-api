@@ -6,6 +6,14 @@ export MGMT_CLUSTER_NAME=cluster-manager
 export WORKLOAD_CLUSTER_NAME=my-cluster  
 
 
+
+if ! command -v kind &> /dev/null
+then
+    curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+    chmod +x ./kind
+    sudo mv ./kind /usr/local/bin/kind
+fi
+
 kind create cluster --name $MGMT_CLUSTER_NAME \
     --config kind_cluster_manager.yaml
 
